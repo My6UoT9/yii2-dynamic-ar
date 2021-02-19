@@ -52,7 +52,7 @@ declared in the model class by the `dynamicColumn()` method. Everything else in 
 class declaration is familiar AR stuff.
 
 ```php
-class Product extends \spinitron\dynamicAr\DynamicActiveRecord
+class Product extends \my6uot9\dynamicAr\DynamicActiveRecord
 {
     public static function tableName()
     {
@@ -118,7 +118,7 @@ $section = Product::find()
 The dot notation works anywhere Yii accepts an attribute name string, for example
 
 ```php
-class Product extends \spinitron\dynamicAr\DynamicActiveRecord
+class Product extends \my6uot9\dynamicAr\DynamicActiveRecord
 {
     public function rules()
     {
