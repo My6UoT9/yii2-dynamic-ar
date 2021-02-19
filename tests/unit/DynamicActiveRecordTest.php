@@ -296,7 +296,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         unset($product);
     }
 
-    public function testDynamicValueObects()
+    public function testDynamicValueObjects()
     {
         $expected = [
             'str' => 'str',
