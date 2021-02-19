@@ -61,12 +61,12 @@ class DynamicActiveQueryTest extends DatabaseTestCase
         $query->select('*')
             ->where('(!one.two|char!) = t');
         $command = $query->createCommand();
-        $this->assertEquals("SELECT *, COLUMN_JSON(`dynamic_columns`) AS `dynamic_columns` FROM `product` WHERE COLUMN_GET(COLUMN_GET(dynamic_columns, 'one' AS BINARY), 'two' AS char) = t",
+        $this->assertEquals("SELECT *, COLUMN_JSON(`product`.`dynamic_columns`) AS `dynamic_columns` FROM `product` WHERE COLUMN_GET(COLUMN_GET(`product`.`dynamic_columns`, 'one' AS BINARY), 'two' AS char) = t",
             $command->getRawSql());
 
         $query->andWhere('(!one.three|int!) = 5');
         $command = $query->createCommand();
-        $this->assertEquals("SELECT *, COLUMN_JSON(`dynamic_columns`) AS `dynamic_columns` FROM `product` WHERE (COLUMN_GET(COLUMN_GET(dynamic_columns, 'one' AS BINARY), 'two' AS char) = t) AND (COLUMN_GET(COLUMN_GET(dynamic_columns, 'one' AS BINARY), 'three' AS int) = 5)",
+        $this->assertEquals("SELECT *, COLUMN_JSON(`product`.`dynamic_columns`) AS `dynamic_columns` FROM `product` WHERE (COLUMN_GET(COLUMN_GET(`product`.`dynamic_columns`, 'one' AS BINARY), 'two' AS char) = t) AND (COLUMN_GET(COLUMN_GET(`product`.`dynamic_columns`, 'one' AS BINARY), 'three' AS int) = 5)",
             $command->getRawSql());
     }
 
@@ -114,7 +114,7 @@ class DynamicActiveQueryTest extends DatabaseTestCase
         $query = new DynamicActiveQuery(Product::class);
         $query->select('(!one.two!)');
         $command = $query->createCommand();
-        $this->assertEquals("SELECT COLUMN_GET(COLUMN_GET(dynamic_columns, 'one' AS BINARY), 'two' AS CHAR) FROM `product`",
+        $this->assertEquals("SELECT COLUMN_GET(COLUMN_GET(`product`.`dynamic_columns`, 'one' AS BINARY), 'two' AS CHAR) FROM `product`",
             $command->getRawSql());
     }
 
