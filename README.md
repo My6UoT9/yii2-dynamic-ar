@@ -59,7 +59,7 @@ class Product extends \my6uot9\dynamicAr\DynamicActiveRecord
         return 'product';
     }
 
-    public static function dynamicColumn()
+    public static function dynamicColumn() : string
     {
         return 'details';
     }
@@ -127,7 +127,7 @@ class Product extends \my6uot9\dynamicAr\DynamicActiveRecord
 
     public function search($params)
     {
-        $dataProvider = new \yii\data\ActiveDataProvider([
+        $dataProvider = new ActiveDataProvider([
             'sort' => [
                 'attributes' => [
                     'dimensions.length' => [
@@ -138,6 +138,11 @@ class Product extends \my6uot9\dynamicAr\DynamicActiveRecord
             ],
             // ...
         ]);
+    }
+    
+    public static function dynamicColumn() : string
+    {
+        return 'details';
     }
 }
 ```
@@ -167,7 +172,7 @@ And reading an attribute that doesn't exist returns null.
 Maria does not encode a dynamic column set to SQL NULL:
 
 ```sql
-SELECT COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1)
+SELECT COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1);
 >> 1
 ```
 
@@ -212,7 +217,7 @@ Regenerate docs in gh-pages branch
 
 ## Questions, comments, issues
 
-Use the [issue tracker](dynamic-ar/dynamic-ar/issues). Or you can easily find my email if you prefer.
+Use the [issue tracker](https://github.com/tom--/dynamic-ar/issues). Or you can easily find my email if you prefer.
 
 
 - - -
