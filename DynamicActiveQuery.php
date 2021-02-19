@@ -276,9 +276,14 @@ REGEXP;
     {
         if (!isset($this->_quotedDynamicColumn)) {
             [, $alias] = $this->getTableNameAndAlias();
-            $dynamicColumn = $db->quoteColumnName($this->modelClass::dynamicColumn());
+
+            /** @var DynamicActiveRecord $modelClass */
+            $modelClass = $this->modelClass;
+            $dynamicColumn = $modelClass::dynamicColumn();
+            $dynamicColumnQuoted = $db->quoteColumnName($dynamicColumn);
             $alias = $db->quoteTableName($alias);
-            $this->_quotedDynamicColumn = "{$alias}.{$dynamicColumn}";
+
+            $this->_quotedDynamicColumn = "{$alias}.{$dynamicColumnQuoted}";
         }
         return $this->_quotedDynamicColumn;
     }
