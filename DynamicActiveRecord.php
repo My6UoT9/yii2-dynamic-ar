@@ -9,9 +9,14 @@ namespace my6uot9\dynamicAr;
 
 use Yii;
 use yii\base\Exception;
+use yii\base\InvalidArgumentException;
+use yii\base\InvalidConfigException;
 use yii\base\UnknownPropertyException;
+use yii\db\ActiveQueryInterface;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+use yii\db\ExpressionInterface;
+use yii\helpers\ArrayHelper;
 
 /**
  * DynamicActiveRecord represents relational data with structured dynamic attributes
@@ -559,5 +564,77 @@ abstract class DynamicActiveRecord extends ActiveRecord
         }
 
         return true;
+    }
+
+
+    /**
+     * Finds ActiveRecord instance(s) by the given condition.
+     * This method is internally called by [[findOne()]] and [[findAll()]].
+     *
+     * Function copied from parent, due to static and protected calls.
+     * So we can call our own variation of filterCondition.
+     *
+     * @param mixed $condition please refer to [[findOne()]] for the explanation of this parameter
+     * @return ActiveQueryInterface the newly created [[ActiveQueryInterface|ActiveQuery]] instance.
+     * @throws InvalidConfigException if there is no primary key defined.
+     *
+     * @internal
+     */
+    protected static function findByCondition($condition)
+    {
+        $query = static::find();
+
+        if (!ArrayHelper::isAssociative($condition) && !$condition instanceof ExpressionInterface) {
+            // query by primary key
+            $primaryKey = static::primaryKey();
+            if (isset($primaryKey[0])) {
+                $pk = $primaryKey[0];
+                if (!empty($query->join) || !empty($query->joinWith)) {
+                    $pk = static::tableName() . '.' . $pk;
+                }
+                // if condition is scalar, search for a single primary key, if it is array, search for multiple primary key values
+                $condition = [$pk => is_array($condition) ? array_values($condition) : $condition];
+            } else {
+                throw new InvalidConfigException('"' . get_called_class() . '" must have a primary key.');
+            }
+        } elseif (is_array($condition)) {
+            $aliases = static::filterValidAliases($query);
+            $condition = static::filterCondition($condition, $aliases);
+        }
+
+        return $query->andWhere($condition);
+    }
+
+    /**
+     * Filters array condition before it is assigned to a Query filter.
+     *
+     * This method will ensure that an array condition only filters on existing table columns.
+     * Adapted filterCondition so we can allow the dynamic columns keys, which get resolved later in code.
+     *
+     * @param array $condition condition to filter.
+     * @param array $aliases
+     * @return array filtered condition.
+     * @throws InvalidArgumentException in case array contains unsafe values.
+     * @throws InvalidConfigException
+     * @since 2.0.15
+     * @internal
+     */
+    protected static function filterCondition(array $condition, array $aliases = [])
+    {
+        $result = [];
+        $db = static::getDb();
+        $columnNames = static::filterValidColumnNames($db, $aliases);
+
+        $regex = '/^\(!\s*.*?\s*!\)$/';
+        foreach ($condition as $key => $value) {
+            if (is_string($key)
+                && (!in_array($db->quoteSql($key), $columnNames, true))
+                && (1 !== preg_match($regex, $key))) {
+                    throw new InvalidArgumentException('Key "' . $key . '" is not a column name and can not be used as a filter');
+            }
+            $result[$key] = is_array($value) ? array_values($value) : $value;
+        }
+
+        return $result;
     }
 }
