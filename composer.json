@@ -41,5 +41,8 @@
    		"psr-4": {
             "my6uot9\\dynamicAr\\": ""
         }
-   	}
+   	},
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    }
 }
