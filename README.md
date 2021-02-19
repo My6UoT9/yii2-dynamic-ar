@@ -217,10 +217,10 @@ Regenerate docs in gh-pages branch
 
 ## Questions, comments, issues
 
-Use the [issue tracker](https://github.com/tom--/dynamic-ar/issues). Or you can easily find my email if you prefer.
+Use the [issue tracker](https://github.com/tom--/dynamic-ar/issues).
 
 
 - - -
 
-Copyright (c) 2015 Spinitron LLC
+Copyright (c) 2015 Spinitron LLC  
 Copyright 2021 My6UoT9
