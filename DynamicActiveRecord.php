@@ -512,7 +512,7 @@ class DynamicActiveRecord extends ActiveRecord
      */
     public static function find()
     {
-        return Yii::createObject(DynamicActiveQuery::className(), [get_called_class()]);
+        return Yii::createObject(DynamicActiveQuery::class, [get_called_class()]);
     }
 
     /**

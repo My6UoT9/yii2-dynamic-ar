@@ -31,33 +31,33 @@ class DynamicActiveQueryTest extends DatabaseTestCase
     public function testDynamicSelect()
     {
         // default
-        $query = new DynamicActiveQuery(Product::className());
+        $query = new DynamicActiveQuery(Product::class);
         $query->select('*');
         $command = $query->createCommand();
-        $this->assertEquals('SELECT *, COLUMN_JSON(`dynamic_columns`) AS `dynamic_columns` FROM `product`', $command->getRawSql());
+        $this->assertEquals('SELECT *, COLUMN_JSON(`product`.`dynamic_columns`) AS `dynamic_columns` FROM `product`', $command->getRawSql());
 
         // one dynamic attribute
-        $query = new DynamicActiveQuery(Product::className());
+        $query = new DynamicActiveQuery(Product::class);
         $query->select(['(!cost|decimal(6,2)!)']);
         $command = $query->createCommand();
-        $this->assertEquals("SELECT COLUMN_GET(dynamic_columns, 'cost' AS decimal(6,2)) FROM `product`", $command->getRawSql());
+        $this->assertEquals("SELECT COLUMN_GET(`product`.`dynamic_columns`, 'cost' AS decimal(6,2)) FROM `product`", $command->getRawSql());
 
         // few dynamic attributes
-        $query = new DynamicActiveQuery(Product::className());
+        $query = new DynamicActiveQuery(Product::class);
         $query->select(['(!cost|decimal(6,2)!), (!price.wholesale.12|decimal(6,2)!)']);
         $command = $query->createCommand();
-        $this->assertEquals("SELECT COLUMN_GET(dynamic_columns, 'cost' AS decimal(6,2)), COLUMN_GET(COLUMN_GET(COLUMN_GET(dynamic_columns, 'price' AS BINARY), 'wholesale' AS BINARY), '12' AS decimal(6,2)) FROM `product`", $command->getRawSql());
+        $this->assertEquals("SELECT COLUMN_GET(`product`.`dynamic_columns`, 'cost' AS decimal(6,2)), COLUMN_GET(COLUMN_GET(COLUMN_GET(`product`.`dynamic_columns`, 'price' AS BINARY), 'wholesale' AS BINARY), '12' AS decimal(6,2)) FROM `product`", $command->getRawSql());
 
         // few dynamic, one static
-        $query = new DynamicActiveQuery(Product::className());
+        $query = new DynamicActiveQuery(Product::class);
         $query->select(['(!cost|decimal(6,2)!), (!price.wholesale.12|decimal(6,2)!), id']);
         $command = $query->createCommand();
-        $this->assertEquals("SELECT COLUMN_GET(dynamic_columns, 'cost' AS decimal(6,2)), COLUMN_GET(COLUMN_GET(COLUMN_GET(dynamic_columns, 'price' AS BINARY), 'wholesale' AS BINARY), '12' AS decimal(6,2)), id FROM `product`", $command->getRawSql());
+        $this->assertEquals("SELECT COLUMN_GET(`product`.`dynamic_columns`, 'cost' AS decimal(6,2)), COLUMN_GET(COLUMN_GET(COLUMN_GET(`product`.`dynamic_columns`, 'price' AS BINARY), 'wholesale' AS BINARY), '12' AS decimal(6,2)), AS `id` FROM `product`", $command->getRawSql());
     }
 
     public function testWhere()
     {
-        $query = new DynamicActiveQuery(Product::className());
+        $query = new DynamicActiveQuery(Product::class);
         $query->select('*')
             ->where('(!one.two|char!) = t');
         $command = $query->createCommand();
@@ -76,7 +76,7 @@ class DynamicActiveQueryTest extends DatabaseTestCase
     public function testTypesProcessing()
     {
         // it's enough to just check select - logic is similar for the whole sql query
-        $query = new DynamicActiveQuery(Product::className());
+        $query = new DynamicActiveQuery(Product::class);
 
         foreach ($this->types() as $k => $possibleTypes) {
             foreach ($possibleTypes as $type) {
@@ -94,7 +94,7 @@ class DynamicActiveQueryTest extends DatabaseTestCase
     public function testNestedTypesProcessing()
     {
         // it's enough to just check select - logic is similar for the whole sql query
-        $query = new DynamicActiveQuery(Product::className());
+        $query = new DynamicActiveQuery(Product::class);
 
         foreach ($this->types() as $k => $possibleTypes) {
             foreach ($possibleTypes as $type) {
@@ -111,7 +111,7 @@ class DynamicActiveQueryTest extends DatabaseTestCase
 
     public function testAttributeWithoutTypeProcessing()
     {
-        $query = new DynamicActiveQuery(Product::className());
+        $query = new DynamicActiveQuery(Product::class);
         $query->select('(!one.two!)');
         $command = $query->createCommand();
         $this->assertEquals("SELECT COLUMN_GET(COLUMN_GET(dynamic_columns, 'one' AS BINARY), 'two' AS CHAR) FROM `product`",
@@ -168,7 +168,7 @@ class DynamicActiveQueryTest extends DatabaseTestCase
     {
         $this->setExpectedException('yii\base\Exception');
 
-        $query = new DynamicActiveQuery(MissingDynColumn::className());
+        $query = new DynamicActiveQuery(MissingDynColumn::class);
         $query->one();
     }
 
@@ -176,7 +176,7 @@ class DynamicActiveQueryTest extends DatabaseTestCase
     {
         $this->setExpectedException('yii\base\UnknownPropertyException');
 
-        $query = new DynamicActiveQuery(Product::className());
+        $query = new DynamicActiveQuery(Product::class);
         $query->select('name')->asArray()->indexBy('str');
         $query->all();
     }
