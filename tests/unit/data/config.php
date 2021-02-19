@@ -47,7 +47,6 @@ $config = [
 ];
 
 if (is_file(__DIR__ . '/config.local.php')) {
-    /** @noinspection PhpIncludeInspection */
     include(__DIR__ . '/config.local.php');
 }
 
