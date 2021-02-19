@@ -349,12 +349,12 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         $this->assertArraySubset($expected, $actual);
     }
 
-    public function testDotAttributes()
-    {
-        /** @var Product $p */
-        $p = Product::findOne(1);
-        $this->markTestIncomplete('need to write assertions');
-    }
+//    public function testDotAttributes()
+//    {
+//        /** @var Product $p */
+//        $p = Product::findOne(1);
+//        $this->markTestIncomplete('need to write assertions');
+//    }
 
     public function testCustomColumns()
     {

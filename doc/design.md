@@ -75,7 +75,7 @@ $product->price = [
         12 => 11.50,
         60 => 10.40,
     ],
-]
+];
 ```
 
 A dynamic attribute's name must be a [valid PHP label](http://php.net/manual/en/language.variables.basics.php) but child labels can be any non-empty string.

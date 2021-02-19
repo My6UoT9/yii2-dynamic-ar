@@ -51,7 +51,7 @@ $this->beginContent(__DIR__ . '/main.php', isset($type) ? ['type' => $type] : []
 <script type="text/javascript">
     /*<![CDATA[*/
     $("a.toggle").on('click', function () {
-        var $this = $(this);
+        const $this = $(this);
         if ($this.hasClass('properties-hidden')) {
             $this.text($this.text().replace(/Show/, 'Hide'));
             $this.parents(".summary").find(".inherited").show();
