@@ -30,7 +30,7 @@ namespace spinitron\dynamicAr;
  *
  * @package spinitron\dynamicAr
  */
-class ValueExpression extends \yii\base\Object
+class ValueExpression extends \yii\base\BaseObject
 {
     /**
      * @var mixed The dynamic attribute value.
@@ -63,7 +63,7 @@ class ValueExpression extends \yii\base\Object
      *
      * @return string The dynamic value's SQL expression.
      */
-    public function __toString()
+    public function __toString() : string
     {
         return $this->value . ($this->type !== null ? ' as ' . $this->type : '');
     }
