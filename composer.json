@@ -39,7 +39,7 @@
     },
     "autoload": {
    		"psr-4": {
-            "my6uot9\\dynamicAr\\": ""
+            "my6uot9\\dynamicAr\\": "src"
         }
    	},
     "scripts": {
