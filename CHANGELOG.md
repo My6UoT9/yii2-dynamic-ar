@@ -38,3 +38,13 @@
 - Enh: Add DynamicActiveRecord::docAttributes() to get all attributes in a map of dot-notation keys to values
 - Bug: Missing docblock tags
 - Refactor: Don't expose your privates
+
+## 0.4.0 Feb 2021
+- Bug: Fix problems with table aliases and relations, as described: https://github.com/tom--/yii2-dynamic-ar/issues/23
+- Enh: Moved code into src folder
+- Bug: Fix problem with Object/BaseObject
+- Updated: Fixed tests
+- Enh: upgraded PHPUnit to 5.7
+- Enh: Set variable/function types where possible
+- Change: Updated the namespace, prepared for publishing on packagist
+- Change: Changed DynamicActiveRecord to an abstract class, to force implementation of dynamicColumn method without throwing exception by default.
