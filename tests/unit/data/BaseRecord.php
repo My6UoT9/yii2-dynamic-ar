@@ -7,7 +7,7 @@
 
 namespace tests\unit\data;
 
-use \spinitron\dynamicAr\DynamicActiveRecord;
+use \my6uot9\dynamicAr\DynamicActiveRecord;
 
 /**
  * ActiveRecord is ...

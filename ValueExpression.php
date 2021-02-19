@@ -1,6 +1,6 @@
 <?php
 
-namespace spinitron\dynamicAr;
+namespace my6uot9\dynamicAr;
 
 /**
  * A ValueExpression object represents the value of a dynamic attribute that DynamicActiveRecord
@@ -28,7 +28,7 @@ namespace spinitron\dynamicAr;
  * > NOTE: using ValueExpression for the value of a column attribute rather than a dynamic attribute
  * will cause an error.
  *
- * @package spinitron\dynamicAr
+ * @package my6uot9\dynamicAr
  */
 class ValueExpression extends \yii\base\BaseObject
 {

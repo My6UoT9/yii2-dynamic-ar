@@ -5,7 +5,7 @@
  * @license http://opensource.org/licenses/ISC
  */
 
-namespace spinitron\dynamicAr;
+namespace my6uot9\dynamicAr;
 
 use Yii;
 use yii\base\UnknownPropertyException;

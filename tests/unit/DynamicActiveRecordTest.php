@@ -7,10 +7,10 @@
 
 namespace tests\unit;
 
-use spinitron\dynamicAr\ValueExpression;
+use my6uot9\dynamicAr\ValueExpression;
 use tests\unit\data\BaseRecord;
-use spinitron\dynamicAr\DynamicActiveRecord;
-use spinitron\dynamicAr\DynamicActiveQuery;
+use my6uot9\dynamicAr\DynamicActiveRecord;
+use my6uot9\dynamicAr\DynamicActiveQuery;
 use yiiunit\framework\db\ActiveRecordTest;
 use tests\unit\data\dar\Product;
 use yii\db\Connection;

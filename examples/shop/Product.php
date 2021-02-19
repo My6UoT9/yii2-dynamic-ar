@@ -2,7 +2,7 @@
 
 namespace examples\shop;
 
-class Product extends \spinitron\dynamicAr\DynamicActiveRecord
+class Product extends \my6uot9\dynamicAr\DynamicActiveRecord
 {
     public function rules()
     {

@@ -2,7 +2,7 @@
 
 namespace tests\unit\data\dar;
 
-use \spinitron\dynamicAr\DynamicActiveQuery;
+use \my6uot9\dynamicAr\DynamicActiveQuery;
 use tests\unit\data\BaseRecord;
 
 class Supplier extends BaseRecord

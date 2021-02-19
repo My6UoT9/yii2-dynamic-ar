@@ -7,7 +7,7 @@
 
 namespace tests\unit;
 
-use spinitron\dynamicAr\DynamicActiveQuery;
+use my6uot9\dynamicAr\DynamicActiveQuery;
 use tests\unit\data\ar\UsualModel;
 use tests\unit\data\BaseRecord;
 use tests\unit\data\dar\MissingDynColumn;

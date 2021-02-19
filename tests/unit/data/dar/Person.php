@@ -2,8 +2,8 @@
 
 namespace tests\unit\data\dar;
 
-use \spinitron\dynamicAr\DynamicActiveQuery;
-use spinitron\dynamicAr\DynamicActiveRecord;
+use \my6uot9\dynamicAr\DynamicActiveQuery;
+use \my6uot9\dynamicAr\DynamicActiveRecord;
 use tests\unit\data\BaseRecord;
 
 class Person extends Supplier

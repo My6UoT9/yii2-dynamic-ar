@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace spinitron\dynamicAr\doc\template;
+namespace my6uot9\dynamicAr\doc\template;
 
 use Yii;
 
@@ -28,9 +28,9 @@ class ApiRenderer extends \yii\apidoc\templates\bootstrap\ApiRenderer
         $this->layout = __DIR__ . '/views/layouts/api.php';
 
         $keep = [
-            'spinitron\\dynamicAr\\DynamicActiveQuery',
-            'spinitron\\dynamicAr\\DynamicActiveRecord',
-            'spinitron\\dynamicAr\\ValueExpression',
+            'my6uot9\\dynamicAr\\DynamicActiveQuery',
+            'my6uot9\\dynamicAr\\DynamicActiveRecord',
+            'my6uot9\\dynamicAr\\ValueExpression',
             'yii\\db\\ActiveQuery',
             'yii\\db\\Query',
             'yii\\base\\Component',

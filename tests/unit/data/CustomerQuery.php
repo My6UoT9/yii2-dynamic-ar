@@ -2,7 +2,7 @@
 
 namespace tests\unit\data;
 
-use \spinitron\dynamicAr\DynamicActiveQuery;
+use \my6uot9\dynamicAr\DynamicActiveQuery;
 
 /**
  * CustomerQuery
