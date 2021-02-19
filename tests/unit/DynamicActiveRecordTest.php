@@ -653,9 +653,9 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         $this->assertTrue($products[0]->isRelationPopulated('supplier'));
         $this->assertTrue($products[1]->isRelationPopulated('supplier'));
         $this->assertTrue($products[2]->isRelationPopulated('supplier'));
-        $this->assertEquals(1, count($products[0]->supplier));
-        $this->assertEquals(0, count($products[1]->supplier));
-        $this->assertEquals(0, count($products[2]->supplier));
+        $this->assertNotNull($products[0]->supplier);
+        $this->assertNull($products[1]->supplier);
+        $this->assertNull($products[2]->supplier);
     }
 
     public function testRelationsWhereDynamicColumnMissing()
