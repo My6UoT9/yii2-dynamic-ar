@@ -216,3 +216,4 @@ Use the [issue tracker](dynamic-ar/dynamic-ar/issues). Or you can easily find my
 - - -
 
 Copyright (c) 2015 Spinitron LLC
+Copyright 2021 My6UoT9
