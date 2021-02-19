@@ -1,6 +1,8 @@
 # Dynamic Active Record
 
-The [yii2-dynamic-ar](https://github.com/tom--/dynamic-ar) extension adds NoSQL-like documents to
+This is a fork of [Tom Worster's version](https://github.com/tom--/yii2-dynamic-ar).
+
+The [yii2-dynamic-ar](https://github.com/My6UoT9/yii2-dynamic-ar) extension adds NoSQL-like documents to
 [Yii 2 Framework](http://www.yiiframework.com/)'s
 [Active Record ORM](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html).
 
