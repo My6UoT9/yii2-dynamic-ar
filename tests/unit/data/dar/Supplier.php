@@ -8,7 +8,7 @@ use tests\unit\data\BaseRecord;
 class Supplier extends BaseRecord
 {
 
-    public static function dynamicColumn()
+    public static function dynamicColumn() : string
     {
         return 'dynamic_columns';
     }

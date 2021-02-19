@@ -57,17 +57,17 @@ class DynamicActiveRecord extends ActiveRecord
     /**
      * @var int Counter of PDO placeholders used in a query.
      */
-    protected static $placeholderCounter;
+    protected static int $placeholderCounter;
 
-    private $_dynamicAttributes = [];
+    private array $_dynamicAttributes = [];
 
     /**
      * Specifies the name of the table column containing dynamic attributes.
      *
      * @return string Name of the table column containing dynamic column data
-     * @throws \yii\base\Exception if not overriden by descendent class.
+     * @throws Exception if not overriden by descendent class.
      */
-    public static function dynamicColumn()
+    public static function dynamicColumn() : string
     {
         throw new \yii\base\Exception('A DynamicActiveRecord class must override "dynamicColumn()"');
     }
@@ -191,7 +191,7 @@ class DynamicActiveRecord extends ActiveRecord
      *
      * @return bool true if the attribute is set
      */
-    public function issetAttribute($name)
+    public function issetAttribute(string $name) : bool
     {
         try {
             if (parent::__get($name) !== null) {
@@ -218,7 +218,7 @@ class DynamicActiveRecord extends ActiveRecord
      *
      * @param string $name attribute name, use dotted notation for structured attributes.
      */
-    public function unsetAttribute($name)
+    public function unsetAttribute(string $name)
     {
         try {
             parent::__unset($name);
@@ -248,7 +248,7 @@ class DynamicActiveRecord extends ActiveRecord
      *
      * @return array Map of keys in dotted notation to corresponding values
      */
-    protected static function dotKeyValues($prefix, $array)
+    protected static function dotKeyValues(string $prefix, array $array): array
     {
         $fields = [];
         foreach ($array as $key => $value) {
@@ -271,7 +271,7 @@ class DynamicActiveRecord extends ActiveRecord
      * @return array an array of all attribute names in dotted notation
      * @throws Exception
      */
-    public function dotAttributeNames()
+    public function dotAttributeNames() : array
     {
         return array_merge(
             array_values(parent::fields()),
@@ -285,7 +285,7 @@ class DynamicActiveRecord extends ActiveRecord
      * @return array Array of attribute values with attribute names as array keys in dotted notation.
      * @throws Exception
      */
-    public function dotAttributes()
+    public function dotAttributes() : array
     {
         return array_merge(
             $this->attributes,
@@ -300,8 +300,9 @@ class DynamicActiveRecord extends ActiveRecord
      * @param string $type SQL datatype type
      *
      * @return string a Maria COLUMN_GET expression
+     * @throws Exception
      */
-    public static function columnExpression($name, $type = 'char')
+    public static function columnExpression(string $name, string $type = 'char'):string
     {
         $sql = '[[' . static::dynamicColumn() . ']]';
         $parts = explode('.', $name);
@@ -319,9 +320,9 @@ class DynamicActiveRecord extends ActiveRecord
      *
      * @return string the placeholder string
      */
-    public static function placeholder()
+    public static function placeholder() : string
     {
-        if (static::$placeholderCounter === null) {
+        if (!isset(static::$placeholderCounter)) {
             static::$placeholderCounter = 1;
         } else {
             static::$placeholderCounter += 1;
@@ -362,10 +363,10 @@ class DynamicActiveRecord extends ActiveRecord
     /**
      * Replacement for PHP's array walk and map builtins.
      *
-     * @param array $array An array to walk, which may be nested
-     * @param callable $method A method to map on the array
+     * @param array|object $array An array to walk, which may be nested
+     * @param callable|string $method A method to map on the array
      */
-    protected static function walk(& $array, $method)
+    protected static function walk( & $array, $method)
     {
         if (is_scalar($array)) {
             $array = static::$method($array);
@@ -396,7 +397,7 @@ class DynamicActiveRecord extends ActiveRecord
      *
      * @param array $array the array
      */
-    protected static function encodeArrayForMaria(& $array)
+    protected static function encodeArrayForMaria(array & $array)
     {
         self::walk($array, 'encodeForMaria');
     }
@@ -406,7 +407,7 @@ class DynamicActiveRecord extends ActiveRecord
      *
      * @param array $array the array
      */
-    protected static function decodeArrayForMaria(& $array)
+    protected static function decodeArrayForMaria(array & $array)
     {
         self::walk($array, 'decodeForMaria');
     }
@@ -419,9 +420,9 @@ class DynamicActiveRecord extends ActiveRecord
      * @param array $params expression parameters for binding, passed by reference
      *
      * @return string SQL for a DB Expression
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
-    protected static function dynColSqlMaria(array $attrs, & $params)
+    protected static function dynColSqlMaria(array $attrs, array & $params) : string
     {
         $sql = [];
         foreach ($attrs as $key => $value) {
@@ -455,9 +456,10 @@ class DynamicActiveRecord extends ActiveRecord
      *
      * @param array $attrs the dynamic attributes, which may be nested
      *
-     * @return null|\yii\db\Expression
+     * @return null|Expression
+     * @throws Exception
      */
-    public static function dynColExpression($attrs) {
+    public static function dynColExpression(array $attrs) : ?Expression {
         if (!$attrs) {
             return null;
         }
@@ -468,7 +470,7 @@ class DynamicActiveRecord extends ActiveRecord
         static::encodeArrayForMaria($attrs);
         $sql = static::dynColSqlMaria($attrs, $params);
 
-        return new \yii\db\Expression($sql, $params);
+        return new Expression($sql, $params);
     }
 
     /**
@@ -481,7 +483,7 @@ class DynamicActiveRecord extends ActiveRecord
      *
      * @return array Dynamic attributes in name => value pairs (possibly nested)
      */
-    public static function dynColDecode($encoded)
+    public static function dynColDecode(string $encoded) :array
     {
         // Maria has a bug in its COLUMN_JSON funcion in which it fails to escape the
         // control characters U+0000 through U+001F. This causes JSON decoders to fail.
@@ -506,6 +508,7 @@ class DynamicActiveRecord extends ActiveRecord
      * Returns a query object for the model/class.
      *
      * @return DynamicActiveQuery
+     * @throws \yii\base\InvalidConfigException
      */
     public static function find()
     {

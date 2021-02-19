@@ -13,7 +13,7 @@ class MissingDynColumn extends BaseRecord
 
     public $customColumn;
 
-    public static function dynamicColumn()
+    public static function dynamicColumn() : string
     {
         return 'dynamic_columnsss';
     }

@@ -46,10 +46,6 @@ use yii\db\ActiveQuery;
  */
 class DynamicActiveQuery extends ActiveQuery
 {
-    /**
-     * @var string name of the DynamicActiveRecord's column storing serialized dynamic attributes
-     */
-    private $_dynamicColumn;
 
     /**
      * Converts the indexBy column name an anonymous function that writes rows to the
@@ -77,9 +73,7 @@ class DynamicActiveQuery extends ActiveQuery
             }
 
             $dynamicAttributes = DynamicActiveRecord::dynColDecode($row[$dynamicColumn]);
-            $value = $this->getDotNotatedValue($dynamicAttributes, $column);
-
-            return $value;
+            return $this->getDotNotatedValue($dynamicAttributes, $column);
         };
 
         return $this;
@@ -98,23 +92,37 @@ class DynamicActiveQuery extends ActiveQuery
     {
         /** @var DynamicActiveRecord $modelClass */
         $modelClass = $this->modelClass;
-        $this->_dynamicColumn = $modelClass::dynamicColumn();
+        $_dynamicColumn = $modelClass::dynamicColumn();
 
-        if (empty($this->_dynamicColumn)) {
+        if (empty($_dynamicColumn)) {
             /** @var string $modelClass */
             throw new \yii\base\InvalidConfigException(
                 $modelClass . '::dynamicColumn() must return an attribute name'
             );
         }
 
+        [, $alias] = $this->getTableNameAndAlias();
+        $db = $modelClass::getDb();
+
+        $addDynamicColumn = false;
         if (empty($this->select)) {
-            $this->select[] = '*';
+            $this->select = ["{$db->quoteTableName($alias)}.*"];
+            $addDynamicColumn = true;
         }
 
-        if (is_array($this->select) && in_array('*', $this->select)) {
+        if ($addDynamicColumn
+            || (
+                is_array($this->select)
+                && (in_array('*', $this->select)
+                    || in_array("{$alias}.*", $this->select)
+                    || in_array("{$db->quoteTableName($alias)}.*", $this->select)
+                )
+            )
+        ) {
+            [, $alias] = $this->getTableNameAndAlias();
             $db = $modelClass::getDb();
-            $this->select[$this->_dynamicColumn] =
-                'COLUMN_JSON(' . $db->quoteColumnName($this->_dynamicColumn) . ')';
+            $this->select["{$_dynamicColumn}"] =
+                "COLUMN_JSON({$db->quoteTableName($alias)}.{$db->quoteColumnName($_dynamicColumn)})";
         }
 
         return parent::prepare($builder);
@@ -202,13 +210,13 @@ class DynamicActiveQuery extends ActiveQuery
         }
 
         if ($this->sql === null) {
-            list ($sql, $params) = $db->getQueryBuilder()->build($this);
+            [$sql, $params] = $db->getQueryBuilder()->build($this);
         } else {
             $sql = $this->sql;
             $params = $this->params;
         }
+        $dynamicColumn = $this->getQuotedDynamicColumn($db);
 
-        $dynamicColumn = $modelClass::dynamicColumn();
         $callback = function ($matches) use (&$params, $dynamicColumn) {
             $type = !empty($matches[3]) ? $matches[3] : 'CHAR';
             $sql = $dynamicColumn;
@@ -248,7 +256,7 @@ REGEXP;
      * @return mixed|null the element in $array referenced by $attribute or null if no such
      * element exists
      */
-    protected function getDotNotatedValue($array, $attribute)
+    protected function getDotNotatedValue(array $array, string $attribute)
     {
         $pieces = explode('.', $attribute);
         foreach ($pieces as $piece) {

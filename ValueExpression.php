@@ -40,7 +40,7 @@ class ValueExpression extends \yii\base\BaseObject
      * @var null|string The value's
      * [SQL datatype](https://mariadb.com/kb/en/mariadb/dynamic-columns/#datatypes) (optional)
      */
-    public $type;
+    public ?string $type;
 
     /**
      * Constructor.

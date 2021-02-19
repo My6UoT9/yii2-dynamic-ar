@@ -13,7 +13,7 @@ class Person extends Supplier
         return 'supplier';
     }
 
-    public static function dynamicColumn()
+    public static function dynamicColumn() : string
     {
         return 'dynamic_columns';
     }
