@@ -10,6 +10,7 @@ namespace my6uot9\dynamicAr;
 use Yii;
 use yii\base\UnknownPropertyException;
 use yii\db\ActiveQuery;
+use yii\db\Connection;
 
 /**
  * DynamicActiveQuery represents queries on relational data with structured dynamic attributes.
@@ -267,5 +268,18 @@ REGEXP;
         }
 
         return $array;
+    }
+
+    protected string $_quotedDynamicColumn;
+
+    protected function getQuotedDynamicColumn(Connection $db) : string
+    {
+        if (!isset($this->_quotedDynamicColumn)) {
+            [, $alias] = $this->getTableNameAndAlias();
+            $dynamicColumn = $db->quoteColumnName($this->modelClass::dynamicColumn());
+            $alias = $db->quoteTableName($alias);
+            $this->_quotedDynamicColumn = "{$alias}.{$dynamicColumn}";
+        }
+        return $this->_quotedDynamicColumn;
     }
 }
