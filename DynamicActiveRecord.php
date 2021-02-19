@@ -11,6 +11,7 @@ use Yii;
 use yii\base\Exception;
 use yii\base\UnknownPropertyException;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * DynamicActiveRecord represents relational data with structured dynamic attributes
@@ -69,7 +70,7 @@ class DynamicActiveRecord extends ActiveRecord
      */
     public static function dynamicColumn() : string
     {
-        throw new \yii\base\Exception('A DynamicActiveRecord class must override "dynamicColumn()"');
+        throw new Exception('A DynamicActiveRecord class must override "dynamicColumn()"');
     }
 
     /**
