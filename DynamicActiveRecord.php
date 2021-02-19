@@ -43,7 +43,7 @@ use yii\db\Expression;
  *
  * @author Tom Worster <fsb@thefsb.org>
  */
-class DynamicActiveRecord extends ActiveRecord
+abstract class DynamicActiveRecord extends ActiveRecord
 {
     /**
      * Prefix for base64 encoded dynamic attribute values
@@ -66,12 +66,8 @@ class DynamicActiveRecord extends ActiveRecord
      * Specifies the name of the table column containing dynamic attributes.
      *
      * @return string Name of the table column containing dynamic column data
-     * @throws Exception if not overriden by descendent class.
      */
-    public static function dynamicColumn() : string
-    {
-        throw new Exception('A DynamicActiveRecord class must override "dynamicColumn()"');
-    }
+    abstract public  static  function dynamicColumn() : string;
 
     /**
      * @inheritdoc

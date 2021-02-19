@@ -8,6 +8,7 @@
 namespace tests\unit\data;
 
 use \my6uot9\dynamicAr\DynamicActiveRecord;
+use yii\base\Exception;
 
 /**
  * ActiveRecord is ...
@@ -22,5 +23,10 @@ class BaseRecord extends DynamicActiveRecord
     public static function getDb()
     {
         return self::$db;
+    }
+
+    public static function dynamicColumn() : string
+    {
+        throw new Exception('A DynamicActiveRecord class must override "dynamicColumn()"');
     }
 }
