@@ -22,9 +22,9 @@ $config = [
 //            'fixture' => __DIR__ . '/cubrid.sql',
 //        ],
         'mysql' => [
-            'dsn' => 'mysql:host=127.0.0.1;dbname=test',
-            'username' => 'travis',
-            'password' => '',
+            'dsn' => 'mysql:host=127.0.0.1;dbname=yiitest',
+            'username' => 'root',
+            'password' => 'root',
             'fixture' => __DIR__ . '/mysql.sql',
         ],
 //        'sqlite' => [
