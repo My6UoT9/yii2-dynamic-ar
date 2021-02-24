@@ -11,7 +11,7 @@ use my6uot9\dynamicAr\DynamicActiveQuery;
 use tests\unit\data\ar\UsualModel;
 use tests\unit\data\BaseRecord;
 use tests\unit\data\dar\MissingDynColumn;
-use yiiunit\framework\db\DatabaseTestCase;
+//use yiiunit\framework\db\DatabaseTestCase;
 use tests\unit\data\dar\Product;
 
 /**
@@ -20,7 +20,7 @@ use tests\unit\data\dar\Product;
 class DynamicActiveQueryTest extends DatabaseTestCase
 {
 
-    protected function setUp()
+    protected function setUp():void
     {
         static::$params = require(__DIR__ . '/data/config.php');
         $this->driverName = array_keys(static::$params['databases'])[0];
@@ -84,9 +84,9 @@ class DynamicActiveQueryTest extends DatabaseTestCase
                 $command = $query->createCommand();
 
                 $sql = $command->getRawSql();
-                $this->assertNotContains("(!test|$type!)", $sql,
+                $this->assertStringNotContainsString("(!test|$type!)", $sql,
                     "Type $type should be processed, there shouldn't be any user's dynamic queries");
-                $this->assertContains("as $type", $sql, "Type $type should be processed", true);
+                $this->assertStringContainsString("AS $type", $sql, "Type $type should be processed", true);
             }
         }
     }
@@ -102,9 +102,9 @@ class DynamicActiveQueryTest extends DatabaseTestCase
                 $command = $query->createCommand();
 
                 $sql = $command->getRawSql();
-                $this->assertNotContains("(!test|$type!)", $sql,
+                $this->assertStringNotContainsString("(!test|$type!)", $sql,
                     "Type $type should be processed, there shouldn't be any user's dynamic queries");
-                $this->assertContains("as $type", $sql, "Type $type should be processed", true);
+                $this->assertStringContainsString("AS $type", $sql, "Type $type should be processed", true);
             }
         }
     }
@@ -166,7 +166,7 @@ class DynamicActiveQueryTest extends DatabaseTestCase
 
     public function testExceptionForMissingDynColumn()
     {
-        $this->setExpectedException('yii\base\Exception');
+        $this->expectException('yii\base\Exception');
 
         $query = new DynamicActiveQuery(MissingDynColumn::class);
         $query->one();
@@ -174,7 +174,7 @@ class DynamicActiveQueryTest extends DatabaseTestCase
 
     public function testIndexByExceptionForMissingDynColumn()
     {
-        $this->setExpectedException('yii\base\UnknownPropertyException');
+        $this->expectException('yii\base\UnknownPropertyException');
 
         $query = new DynamicActiveQuery(Product::class);
         $query->select('name')->asArray()->indexBy('str');

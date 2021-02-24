@@ -6,14 +6,14 @@ use tests\unit\data\dar\Person;
 use tests\unit\data\dar\Product;
 use tests\unit\data\BaseRecord;
 use yii\db\Connection;
-use yiiunit\framework\db\DatabaseTestCase;
+//use yiiunit\framework\db\DatabaseTestCase;
 
 class DynamicActiveRecordAccessTest extends DatabaseTestCase
 {
     /** @var Connection */
     protected static $db;
 
-    protected function setUp()
+    protected function setUp():void
     {
         static::$params = require(__DIR__ . '/data/config.php');
         $this->driverName = array_keys(static::$params['databases'])[0];
