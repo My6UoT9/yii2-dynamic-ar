@@ -1881,57 +1881,6 @@ abstract class ActiveRecordTest extends DatabaseTestCase
     }
 
     /**
-     * @dataProvider legalValuesForFindByCondition
-     */
-    public function testLegalValuesForFindByCondition($modelClassName, $validFilter)
-    {
-        /** @var Query $query */
-        $query = $this->invokeMethod(\Yii::createObject($modelClassName), 'findByCondition', [$validFilter]);
-        Customer::getDb()->queryBuilder->build($query);
-    }
-
-    public function illegalValuesForFindByCondition()
-    {
-        return [
-            [Customer::className(), [['`id`=`id` and 1' => 1]]],
-            [Customer::className(), [[
-                'legal' => 1,
-                '`id`=`id` and 1' => 1,
-            ]]],
-            [Customer::className(), [[
-                'nested_illegal' => [
-                    'false or 1=' => 1
-                ]
-            ]]],
-            [Customer::className(), [['true--' => 1]]],
-
-            [CustomerWithAlias::className(), [['`csr`.`id`=`csr`.`id` and 1' => 1]]],
-            [CustomerWithAlias::className(), [[
-                'legal' => 1,
-                '`csr`.`id`=`csr`.`id` and 1' => 1,
-            ]]],
-            [CustomerWithAlias::className(), [[
-                'nested_illegal' => [
-                    'false or 1=' => 1
-                ]
-            ]]],
-            [CustomerWithAlias::className(), [['true--' => 1]]],
-        ];
-    }
-
-    /**
-     * @dataProvider illegalValuesForFindByCondition
-     */
-    public function testValueEscapingInFindByCondition($modelClassName, $filterWithInjection)
-    {
-        $this->expectException('yii\base\InvalidArgumentException');
-        $this->expectExceptionMessageRegExp('/^Key "(.+)?" is not a column name and can not be used as a filter$/');
-        /** @var Query $query */
-        $query = $this->invokeMethod(\Yii::createObject($modelClassName), 'findByCondition', $filterWithInjection);
-        Customer::getDb()->queryBuilder->build($query);
-    }
-
-    /**
      * Ensure no ambiguous column error occurs on indexBy with JOIN.
      *
      * @see https://github.com/yiisoft/yii2/issues/13859
