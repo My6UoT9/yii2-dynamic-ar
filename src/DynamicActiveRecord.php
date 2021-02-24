@@ -485,7 +485,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
      *
      * @return array Dynamic attributes in name => value pairs (possibly nested)
      */
-    public static function dynColDecode(string $encoded) :array
+    public static function dynColDecode(string $encoded) : array
     {
         // Maria has a bug in its COLUMN_JSON funcion in which it fails to escape the
         // control characters U+0000 through U+001F. This causes JSON decoders to fail.
@@ -499,7 +499,9 @@ abstract class DynamicActiveRecord extends ActiveRecord
         );
 
         $decoded = json_decode($encoded, true);
-        if ($decoded) {
+        if (null === $decoded) {
+            $decoded = [];
+        } else {
             static::decodeArrayForMaria($decoded);
         }
 
@@ -630,7 +632,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
             if (is_string($key)
                 && (!in_array($db->quoteSql($key), $columnNames, true))
                 && (1 !== preg_match($regex, $key))) {
-                    throw new InvalidArgumentException('Key "' . $key . '" is not a column name and can not be used as a filter');
+                throw new InvalidArgumentException('Key "' . $key . '" is not a column name and can not be used as a filter');
             }
             $result[$key] = is_array($value) ? array_values($value) : $value;
         }
