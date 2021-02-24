@@ -827,32 +827,8 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         $this->assertStringContainsString('COLUMN_CREATE', $expression->expression);
     }
 
-    public function testIssues()
-    {
-        $this->markTestSkipped();
-        //parent::testIssues();
-    }
-
-    public function testNoTablenameReplacement()
-    {
-        $this->markTestSkipped();
-        //parent::testNoTablenameReplacement();
-    }
-
-    public function testLegalValuesForFindByCondition($modelClassName, $validFilter)
-    {
-        $this->markTestSkipped();
-    }
-
-    public function testValueEscapingInFindByCondition($modelClassName, $filterWithInjection)
-    {
-        $this->markTestSkipped();
-
-    }
-
     public function testExplicitPkOnAutoIncrement()
     {
         $this->markTestSkipped();
-
-}
+    }
 }

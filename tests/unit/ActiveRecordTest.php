@@ -1430,43 +1430,6 @@ abstract class ActiveRecordTest extends DatabaseTestCase
 //        $this->assertSame(false, $model->bool_col2);
     }
 
-    public function testIssues()
-    {
-        // https://github.com/yiisoft/yii2/issues/4938
-        $category = Category::findOne(2);
-        $this->assertInstanceOf(Category::className(), $category);
-        $this->assertEquals(3, $category->getItems()->count());
-        $this->assertEquals(1, $category->getLimitedItems()->count());
-        $this->assertEquals(1, $category->getLimitedItems()->distinct(true)->count());
-
-        // https://github.com/yiisoft/yii2/issues/3197
-        $orders = Order::find()->with('orderItems')->orderBy('id')->all();
-        $this->assertCount(3, $orders);
-        $this->assertCount(2, $orders[0]->orderItems);
-        $this->assertCount(3, $orders[1]->orderItems);
-        $this->assertCount(1, $orders[2]->orderItems);
-        $orders = Order::find()
-            ->with([
-                'orderItems' => function ($q) {
-                    $q->indexBy('item_id');
-                },
-            ])
-            ->orderBy('id')
-            ->all();
-        $this->assertCount(3, $orders);
-        $this->assertCount(2, $orders[0]->orderItems);
-        $this->assertCount(3, $orders[1]->orderItems);
-        $this->assertCount(1, $orders[2]->orderItems);
-
-        // https://github.com/yiisoft/yii2/issues/8149
-        $model = new Customer();
-        $model->name = 'test';
-        $model->email = 'test';
-        $model->save(false);
-        $model->updateCounters(['status' => 1]);
-        $this->assertEquals(1, $model->status);
-    }
-
     public function testPopulateRecordCallWhenQueryingOnParentClass()
     {
         (new Cat())->save(false);
@@ -1786,30 +1749,6 @@ abstract class ActiveRecordTest extends DatabaseTestCase
         }
     }
 
-    /**
-     * Verify that {{}} are not going to be replaced in parameters.
-     */
-    public function testNoTablenameReplacement()
-    {
-        /** @var Customer $customer */
-        $class = $this->getCustomerClass();
-        $customer = new $class();
-        $customer->name = 'Some {{weird}} name';
-        $customer->email = 'test@example.com';
-        $customer->address = 'Some {{%weird}} address';
-        $customer->insert(false);
-        $customer->refresh();
-
-        $this->assertEquals('Some {{weird}} name', $customer->name);
-        $this->assertEquals('Some {{%weird}} address', $customer->address);
-
-        $customer->name = 'Some {{updated}} name';
-        $customer->address = 'Some {{%updated}} address';
-        $customer->update(false);
-
-        $this->assertEquals('Some {{updated}} name', $customer->name);
-        $this->assertEquals('Some {{%updated}} address', $customer->address);
-    }
 
     /**
      * Ensure no ambiguous column error occurs if ActiveQuery adds a JOIN.
