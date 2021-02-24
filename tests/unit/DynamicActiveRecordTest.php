@@ -839,12 +839,12 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         //parent::testNoTablenameReplacement();
     }
 
-    public function testLegalValuesForFindByCondition()
+    public function testLegalValuesForFindByCondition($modelClassName, $validFilter)
     {
         $this->markTestSkipped();
     }
 
-    public function testValueEscapingInFindByCondition()
+    public function testValueEscapingInFindByCondition($modelClassName, $filterWithInjection)
     {
         $this->markTestSkipped();
 
